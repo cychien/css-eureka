@@ -24,6 +24,7 @@ export const loader: LoaderFunction = async ({ params }) => {
   try {
     return await getLoaderData(params.slug);
   } catch (err) {
+    console.log(err);
     throw new Response("Not Found", {
       status: 404,
     });
