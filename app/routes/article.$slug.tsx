@@ -82,7 +82,7 @@ function Article() {
         <main className="relative lg:pl-[84px]">
           <div className="absolute left-0 top-[14px] bg-secondary-300 h-[8px] w-[42px] rounded-r hidden lg:block" />
           <div className="flex items-start space-x-4xl">
-            <article className="prose prose-lg max-w-full prose-h2:text-2xl prose-h3:text-xl prose-a:no-underline prose-headings:relative prose-a:text-primary-500 hover:prose-a:border-b-2 hover:prose-a:border-primary-500 prose-img:rounded-lg lg:max-w-[676px]">
+            <article className="prose prose-lg max-w-full prose-h2:text-2xl prose-h3:text-xl prose-a:no-underline prose-headings:relative prose-img:rounded-lg lg:max-w-[676px]">
               <PostComponent
                 components={{
                   RefsSection,

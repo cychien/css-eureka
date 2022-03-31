@@ -87,6 +87,13 @@ module.exports = {
               opacity: 0,
               transition: "opacity 200ms ease-in-out",
             },
+            "a:not(.heading-link)": {
+              color: theme("colors.primary[500]"),
+            },
+            "a:not(.heading-link):hover": {
+              borderBottom: "2px solid",
+              borderColor: theme("colors.primary[500]"),
+            },
             "h2:hover .heading-link, h3:hover .heading-link, .heading-link:hover":
               {
                 opacity: 1,
