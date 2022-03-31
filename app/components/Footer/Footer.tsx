@@ -13,7 +13,7 @@ function Footer() {
                 key={page.link}
                 to={page.link}
                 prefetch="intent"
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-600 hover:text-gray-700"
               >
                 {page.name}
               </Link>
@@ -29,7 +29,7 @@ function Footer() {
               CSS Eureka
             </Link>
             <Spacer size="xs" />
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-600">
               如果你曾深入研究過 CSS 規範，那你可能看過標
             </p>
             <Spacer size="lg" />

@@ -5,8 +5,8 @@ import Tag from "~/components/Tag";
 import CATEGORIES from "~/constants/categories";
 import { getMdxPost } from "~/utils/mdx.server";
 import { getMDXComponent } from "mdx-bundler/client";
-import { ThumbsUp } from "react-feather";
-import RefsSection from "~/components/mdx/RefsSection";
+// import { ThumbsUp } from "react-feather";
+import { RefsSection, Ref } from "~/components/mdx/RefsSection";
 import CodeBlock from "~/components/mdx/CodeBlock";
 import InlineCode from "~/components/mdx/InlineCode";
 
@@ -78,22 +78,28 @@ function Article() {
             </defs>
           </svg>
         </div>
-        <Spacer size="0" className="!h-[50px] lg:!h-[84px]" />
+        <Spacer size="0" className="!h-[50px] lg:!h-[64px]" />
         <main className="relative lg:pl-[84px]">
           <div className="absolute left-0 top-[14px] bg-secondary-300 h-[8px] w-[42px] rounded-r hidden lg:block" />
           <div className="flex items-start space-x-4xl">
-            <article className="prose prose-lg max-w-full prose-h2:text-2xl prose-h3:text-xl prose-a:no-underline prose-headings:relative lg:max-w-[676px]">
+            <article className="prose prose-lg max-w-full prose-h2:text-2xl prose-h3:text-xl prose-a:no-underline prose-headings:relative prose-a:text-primary-500 hover:prose-a:border-b-2 hover:prose-a:border-primary-500 prose-img:rounded-lg lg:max-w-[676px]">
               <PostComponent
-                // @ts-ignore
-                components={{ RefsSection, pre: CodeBlock, code: InlineCode }}
+                components={{
+                  RefsSection,
+                  Ref,
+                  // @ts-ignore
+                  pre: CodeBlock,
+                  // @ts-ignore
+                  code: InlineCode,
+                }}
               />
             </article>
-            <div className="sticky top-[96px] items-center space-x-xs hidden lg:flex">
+            {/* <div className="sticky top-[96px] items-center space-x-xs hidden lg:flex">
               <button className="rounded-full p-sm border border-gray-200 bg-gray-100 group transition-transform will-change-transform hover:scale-125">
                 <ThumbsUp className="text-gray-400 group-hover:text-gray-500" />
               </button>
               <div className="text-sm text-gray-500">Likes</div>
-            </div>
+            </div> */}
           </div>
         </main>
       </div>

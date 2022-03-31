@@ -35,6 +35,7 @@ module.exports = {
         100: "#E8F0DB",
         200: "#E0EAD1",
         300: "#D6E7BD",
+        600: "#5c7340",
         700: "#365314",
       },
       gray: colors.stone,

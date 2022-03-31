@@ -55,7 +55,7 @@ export default function Articles() {
                 to={pathname}
                 prefetch="intent"
                 className={cx(
-                  "block text-sm",
+                  "block text-sm font-medium",
                   !currentCategory
                     ? "text-primary-500"
                     : "text-gray-500 hover:text-gray-700"
@@ -70,7 +70,7 @@ export default function Articles() {
                   to={`${pathname}?category=${value}`}
                   prefetch="intent"
                   className={cx(
-                    "block text-sm",
+                    "block text-sm font-medium",
                     currentCategory === value
                       ? "text-primary-500"
                       : "text-gray-500 hover:text-gray-700"
@@ -120,7 +120,7 @@ function Article({
         {title}
       </h3>
       <Spacer size="0" className="!h-[20px]" />
-      <p className="leading-relaxed text-gray-500">{excerpt}</p>
+      <p className="leading-relaxed text-gray-600">{excerpt}</p>
       <Spacer size="sm" />
       <div className="flex space-x-md items-center">
         <Tag>{CATEGORIES[category]}</Tag>

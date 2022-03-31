@@ -18,7 +18,7 @@ function MainPage({ pageName, title, subTitle, children }: PageProps) {
           <h1 className="sr-only">{pageName}</h1>
           <h2 className="text-xl text-gray-700 font-medium">{title}</h2>
           <Spacer size="md" />
-          <div className="text-gray-500">{subTitle}</div>
+          <div className="text-gray-600">{subTitle}</div>
           <Spacer size="2xl" />
         </div>
       </div>

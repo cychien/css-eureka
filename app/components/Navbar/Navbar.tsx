@@ -38,7 +38,7 @@ function Navbar() {
                           : pathname.startsWith(page.link)
                       )
                         ? "!text-primary-500"
-                        : "text-gray-400 hover:text-gray-500"
+                        : "text-gray-500 hover:text-gray-600"
                     )}
                   >
                     <>
@@ -109,7 +109,7 @@ function Navbar() {
                         : pathname.startsWith(page.link)
                     )
                       ? "text-primary-500"
-                      : "text-primary-300"
+                      : "text-gray-500"
                   }
                 >
                   {page.name}

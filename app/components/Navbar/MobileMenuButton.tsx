@@ -25,16 +25,10 @@ function MobileMenuButton({
         )}
       />
       <Bar
-        className={cx(
-          "absolute top-[8px]",
-          isOpen ? "rotate-45 !bg-primary-500" : "rotate-0"
-        )}
+        className={cx("absolute top-[8px]", isOpen ? "rotate-45" : "rotate-0")}
       />
       <Bar
-        className={cx(
-          "absolute top-[8px]",
-          isOpen ? "-rotate-45 !bg-primary-500" : "rotate-0"
-        )}
+        className={cx("absolute top-[8px]", isOpen ? "-rotate-45" : "rotate-0")}
       />
       <Bar
         className={cx(
