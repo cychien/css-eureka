@@ -1,13 +1,13 @@
 ---
-title: CSS 的根本 - Layout mode
-excerpt: 如果你想有一個正確的 CSS mental model，那麼 layout mode 一定是你不可或缺的概念。在這篇文章裡，我會先介紹 layout mode 是什麼，接著...
+title: Layout Mode
+excerpt: Layout mode 是一個常被人們忽略的 CSS 概念，但知道它，你才能真正瞭解 CSS 奇怪之處與 CSS tricks 的發生原因，Layout mode 帶我們以正確的角度理解 CSS。
 publish_date: 2022/1/9
 category: mechanism
 ---
 
 如果你想有一個正確的 CSS mental model，那麼 layout mode 一定是你不可或缺的概念。
 
-在這篇文章裡，我會先介紹 layout mode 是什麼，接著會介紹與其相關聯的 formatting context 與 display 屬性，一起來看看 display 屬性是如何影響 layout mode 的。
+在這篇文章裡，我會先介紹 layout mode 是什麼，接著介紹它為什麼重要以及改變 layout mode 的方法。
 
 ## Layout Mode
 
@@ -27,13 +27,17 @@ flow layout，又稱 normal flow，是預設的 layout，若你沒有特別定�
 
 在 flow layout 下，element 根據其所在的 formatting context (block or inline) 來進行不同的排列。
 
+### Float Layout
+
+float layout 下的 element 以 float 的方式進行排列。
+
 ### Table Layout
 
-table layout 下的 element 會以 table 的方式進行排列。
+table layout 下的 element 以 table 的方式進行排列。
 
 ### Positioned Layout
 
-依照 position 的 value 以及 `top`, `bottom`, `left`, `right` 等屬性對 element 進行定位。
+依照 `position` 的 value 以及 `top`, `bottom`, `left`, `right` 等屬性對 element 進行定位。
 
 ### Multi-column layout
 
@@ -47,11 +51,11 @@ flexible box layout 下的 element 能透過 flex 屬性進行複雜排列。
 
 grid layout 下的 element 能透過 grid 屬性進行複雜二維排列。
 
-在這些不同的 layout 中還定義了許多細則，像是在 flexible box layout 定義了 flex item 不會發生 margin collapse。
+在這些不同的 layout 中還定義了許多細則，像是在 flexible box layout 定義了 flex item 間不會發生 margin collapse。
 
 而 layout 與 layout 彼此之間也存在著一些互動規則，像是 positioned layout element 預設會渲染在其他種 layout element 的「上方」(z 軸)。
 
-這些 layout 的規則大量且繁雜，且內容超出本篇主題，在未來再向大家深入介紹。
+這些 layout 的規則多且繁雜，且內容超出本篇主題，在未來再向大家深入介紹。
 
 ## Formatting Context
 
@@ -87,13 +91,25 @@ CSS 規範中並沒有給 formatting context 一個具體的描述，我是將 f
 
 直至目前為止，有出現在 CSS 規範裡並被特別定義的 formatting context 種類只有 block formatting context、inline formatting context、flex formatting context 與 grid formatting context。
 
-## display 屬性
+## 為什麼 Layout Mode 重要
 
-既然 layout 都規範在那了，那我們如何使用這些酷炫的 layout 進行排版呢？
+前面我們講了許多 layout mode 與 formatting context 的定義，你一定想問，這些東西為何重要？為何會改變我看待 CSS 的認知呢？
 
-那當然是使用 display 屬性了。
+那是因為**不同的 CSS 屬性會因為身處的 layout mode 不同，而有不同的行為**。
 
-當你定義 display 屬性時，**會同時產生 outer display style 與 inner display style**，outer display style 作用在被標上 display 屬性的那個 element 上，而 inner display style 則作用在 那個 element 的 children 上。
+舉 `z-index` 為例，我們知道 `z-index` 值愈高的 element 會被擺在愈上面 (z 軸)，但神奇的是，**`z-index` 在 flow layout 下是沒有作用的**！如果你不知道 layout mode 的概念，你就不會知道 bug 在哪。再舉 `width` 為例，這個屬性**在 flow layout 下與 flexible box layout 下有不同的行為**，在 flow layout 下，`width` 代表 element 的寬度，但在 flexible box layout 下，`width` 代表 element 的 **hypothetical size**，會受到 `flex-grow` 與 `flex-shrink` 影響，如果你不知道 layout mode 的概念，你就會很疑惑為什麼無論 width 設多少，element 寬度都不會變。
+
+瀏覽器渲染畫面的過程就像是一條方程式，你給予 input (CSS 屬性等) 就會產出對應的 output (畫面)。而 input 除了有 CSS 屬性外，還有當前的 layout mode，如果你忽略了 layout mode，那麼理所當然你會對 output 充滿疑惑，不解為何同樣的屬性卻產出不一樣的畫面。
+
+認知 layout mode 可以補足我們 mental model 缺失的那塊，並讓我們寫起 CSS 更自信。
+
+## 如何改變 Layout Mode
+
+我們能透過 `display` 屬性與 `position` 等屬性改變 layout mode。
+
+當我們為一個 element 加上 `position` 屬性時，該 element 就會成為 positioned layout 的。
+
+而當我們定義 `display` 屬性時，事情會變得稍微複雜一點，該 `display` 屬性 **會同時產生 outer display style 與 inner display style**，outer display style 作用在被標上 display 屬性的那個 element 上，而 inner display style 則作用在那個 element 的 children 上。
 
 不同的 display style 會對應產生不同的行為，底下這張 table 說明當你使用 display 屬性時，背後做了什麼事：
 
@@ -117,7 +133,7 @@ CSS 規範中並沒有給 formatting context 一個具體的描述，我是將 f
 
 ```
 (flow layout)
-.a 是 block level element，因為在 flow layout 下，所以參與 block formatting context。並在其下創建 flexible box layout
+.a 是 block-level element，因為在 flow layout 下，所以參與 block formatting context。並在其下創建 flexible box layout
 |
 | (flexible box layout)
 | .b 是 block level element，但因為在 flexible box layout 下，所以改為參與 flex formatting context。並在其下創建 flow layout
@@ -127,15 +143,29 @@ CSS 規範中並沒有給 formatting context 一個具體的描述，我是將 f
 
 這篇文章從 CSS 規範的角度來解釋網頁 element 的排列原理，可以說是最根本的 CSS 知識。
 
-從這個知識出發你就能清楚地知道被定義 `display: flex` 的 element 實際上自己不是 flexible box layout，是他的 children 才是；並且在未來我也會從此處出發，嘗試解釋更多的 CSS trick 及異常之處 (解釋之後你會發現這些一點都不異常，都是照著規範走而已 😅)。
+從這個知識出發，你就能了解為什麼寫 CSS 時常會有不可預期的行為。在未來，我也會從此處出發，解釋更多的 CSS trick 及異常之處 (解釋之後你會發現這些一點都不異常，都是照著規範走而已 😅)。
 
-希望這篇文章你會喜歡，我們下次見！
+希望這篇文章對你有幫助，我們下次見！
 
-**References**
-
-- [CSS Flow Layout - CSS: Cascading Style Sheets | MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flow_Layout)
-- [Block and inline layout in normal flow](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flow_Layout/)
-- [Layout mode - CSS: Cascading Style Sheets | MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Layout_mode)
-- [Visual formatting model #normal-flow](https://www.w3.org/TR/CSS2/visuren.html#normal-flow)
-- [Box Layout Modes: the display property](https://drafts.csswg.org/css-display/#the-display-properties)
-- [Introduction to formatting contexts - CSS: Cascading Style Sheets | MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flow_Layout/Intro_to_formatting_contexts)
+<RefsSection>
+  <Ref
+    text="CSS Flow Layout - CSS: Cascading Style Sheets | MDN"
+    link="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flow_Layout"
+  />
+  <Ref
+    text="Layout mode - CSS: Cascading Style Sheets | MDN"
+    link="https://developer.mozilla.org/en-US/docs/Web/CSS/Layout_mode"
+  />
+  <Ref
+    text="Visual formatting model #normal-flow"
+    link="https://www.w3.org/TR/CSS2/visuren.html#normal-flow"
+  />
+  <Ref
+    text="Box Layout Modes: the display property"
+    link="https://drafts.csswg.org/css-display/#the-display-properties"
+  />
+  <Ref
+    text="Introduction to formatting contexts - CSS: Cascading Style Sheets | MDN"
+    link="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flow_Layout/Intro_to_formatting_contexts"
+  />
+</RefsSection>
