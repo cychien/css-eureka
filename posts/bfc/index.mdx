@@ -1,0 +1,188 @@
+---
+title: Block Formatting Context (BFC)
+excerpt: 在多種 formatting context 裡，最有名也最神奇的就是 block formatting context 。它有許多不為人知的特性，這些特性能幫助我們達成一些特殊效果。
+publish_date: 2022/4/2
+category: mechanism
+---
+
+import InternalFloatOG from "./InternalFloatOG";
+import InternalFloatOG2 from "./InternalFloatOG2";
+import InternalFloatBFC from "./InternalFloatBFC";
+import ExternalFloatOG from "./ExternalFloatOG";
+import ExternalFloatBFC from "./ExternalFloatBFC";
+
+在多種 formatting context 裡，最有名也最神奇的就是 block formatting context (以下簡稱 BFC)。它有許多不為人知的特性，這些特性能幫助我們達成一些特殊效果。
+
+## 什麼是 BFC
+
+BFC 在 MDN 上的定義是：**a part of a visual CSS rendering of a web**，這有點抽象，我更喜歡將它比擬為 group，這個 group 有一個 id，任何的 block level element 都可以加入這個 group。
+
+在最原始的網頁裡，`<html>` tag 會製造出第一個 BFC，而 `<html>` tag 底下的 element 若沒有創建新的 BFC，就都會加入到這個 root BFC 裡。
+
+element 可以由一些方式創建新的 BFC，這些新 BFC 會有一個新 id，與 root BFC 做分別，一張網頁裡可以有數個 BFC，但一個 element 只能參與一個 BFC。
+
+## 如何生成 BFC
+
+完整的生成方式可見[這個網址](https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context)，這邊列幾個較常出現的生成方式：
+
+- `<html>` tag
+- block element 並且 `overflow` 值不為 `visible` 和 `clip`
+- flex items / grid items (parent 是 `display: flex` 或 `display: grid` )
+- `display: flow-root` 的 element
+
+若遇到符合以上任一條件的 element，那麼在這個 element 底下就會生成新的 BFC，但是**這個 element 本身並不參與在新 BFC 裡**。
+
+想分享上面其中幾個有意思的生成方式。
+
+**block element 並且 `overflow` 值不為 `visible` 和 `clip`**：這是一個過去很常見的 BFC 生成方式，常常看到某些 code 裡莫名其妙的加了 `overflow: hidden` 或 `overflow: auto`，這樣做通常就是為了使用 BFC 的特性，在下一章我們會看 BFC 特性能幫助我們做到什麼事。
+
+**`display: flow-root` 的 element**：這是一個較少人知道的 BFC 生成方式，但卻是最好的，因為他不像其他的方式都有副作用 (ex. `overflow: hidden`，假如我不想要 `hidden` 呢？)，這個屬性的瀏覽器支援程度也比想像中高，[幾乎所有現代瀏覽器都支援](https://caniuse.com/?search=flow-root) (IE 不支援)。flow-root 的意思等同於 `<html>` tag，`display: flow-root` 就是將這個 element 模擬為 html tag，也就會創建一個新 BFC。
+
+知道怎麼生成 BFC 了，我們要回到一個關鍵問題，為什麼要刻意生成 BFC？它的特性能拿來做什麼？
+
+## BFC 特性與 use cases
+
+### BFC 特性
+
+BFC 的特性有 3 個:
+
+- 不同 BFC 之間不會發生 margin collapse
+- BFC 會包含在這個 BFC 中的 float elements
+- BFC 會排除不在這個 BFC 的 float elements
+
+### 不同 BFC 之間不會發生 margin collapse
+
+margin collapse 是一個惡名昭彰的 CSS 問題，解決方法有很多，使用 BFC 便是其中之一，如果你不想讓某個 element 與其他 element margin collapse，那你可以將它放入一個新的 BFC:
+
+```html
+<div>
+  <p>First line</p>
+  <p>Second line</p>
+  <div class="newBFC">
+    <p>First line</p>
+  </div>
+  <div>
+    <style>
+      p {
+        margin: 10px 0;
+      }
+      .newBFC {
+        overflow: hidden; /* or */
+        display: flow-root;
+      }
+    </style>
+  </div>
+</div>
+```
+
+### BFC 會包含在同個 BFC 中的 float elements
+
+看看下面的 code：
+
+```html
+<div class="parent">
+  <div class="float">I am a floated box!</div>
+  <p>I am content inside the container.</p>
+</div>
+
+<style>
+  .float {
+    height: 100px;
+  }
+</style>
+```
+
+這段 code 會畫出如下的 ui：
+
+<InternalFloatOG />
+
+之所以有這樣的結果，是因為 float element 本身會 out of flow，因此 parent element 會假設 float element 不存在一般，但值得注意的是，此時 parent element、float element 仍然通通在同一個 BFC 下，因此依照 BFC 特性，這個大 BFC 會包含他們所有人，上個顏色就可以清楚看出：
+
+<InternalFloatOG2 />
+
+如果我們不想要這個奇怪 ui，想讓 float element 在 ui 上也被包含在 parent element 裡，該怎麼做呢？
+
+很簡單，我們在 parent element 上再創一個 BFC，這個 BFC 會將當中的 elements 全部囊括在內，無論 float element 有多高：
+
+```html
+<div class="parent newBFC">
+  <div class="float">I am a floated box!</div>
+  <p>I am content inside the container.</p>
+</div>
+
+<style>
+  .newBFC {
+    overflow: hidden; /* or */
+    display: flow-root;
+  }
+  .float {
+    height: 100px;
+  }
+</style>
+```
+
+<InternalFloatBFC />
+
+### BFC 會排除不在同個 BFC 的 float elements
+
+和前一條特性相反，如果遇到不在同個 BFC 的 float element，該 BFC 中的 element 會繞過這個 element。
+
+這有點抽象，但我們可以以 media card 的範例來理解。我們用 float 簡單的畫了 media card，但你會發現它長得很奇怪：
+
+```html
+<div>
+  <div class="float">Floated div</div>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation
+  </p>
+</div>
+```
+
+<ExternalFloatOG />
+
+在 block formatting context 裡，預設所有內容都是從左至右排列，除非遇到 float element；如果遇到 float element，就會從 float element 後從左到右排列，因此 ui 恰恰會長成這樣。
+
+但我們可以利用 BFC 的特性來解決這問題，如上所說：**遇到不在同個 BFC 的 float element，該 BFC 中的 element 會繞過這個 element**，我們可以在 p element 創建新 BFC，該 p element 就不會與 float element 重疊，進而達到我們想要的效果。
+
+```html
+<div>
+  <div class="float">Floated div</div>
+  <p class="newBFC">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation
+  </p>
+</div>
+
+<style>
+  .newBFC {
+    overflow: hidden; /* or */
+    display: flow-root;
+  }
+</style>
+```
+
+<ExternalFloatBFC />
+
+## 總結
+
+如果你常使用 float 排版，那麼 BFC 可能蠻重要的，它的 3 個特性中就有 2 個與 float 有關，但若你常使用 flex 或其他 layout，那麼 BFC 就沒那麼重要。
+
+不過了解 BFC 仍然是好事，因為它能讓我們以更正確的角度看待 CSS，了解瀏覽器是如何畫出畫面的。
+
+<RefsSection>
+  <Ref
+    text="Block Formatting Contexts in CSS"
+    link="https://medium.com/@ritz078/block-formatting-contexts-in-css-3a9555355019"
+  />
+  <Ref
+    text="Block formatting"
+    link="https://www.w3.org/TR/CSS2/visuren.html#block-formatting"
+  />
+  <Ref
+    text="Block formatting context - Developer guides | MDN"
+    link="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context"
+  />
+</RefsSection>
