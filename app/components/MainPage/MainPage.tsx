@@ -11,10 +11,10 @@ type PageProps = {
 function MainPage({ pageName, title, subTitle, children }: PageProps) {
   return (
     <>
-      <div className="mt-[-94px] pt-[94px] bg-secondary-100">
+      <div className="mt-[-140px] pt-[140px] bg-secondary-100">
         <Spacer size="xl" className="hidden md:block" />
         <Spacer size="md" className="md:hidden" />
-        <div className="container mx-auto">
+        <div className="wrapper mx-auto">
           <h1 className="sr-only">{pageName}</h1>
           <h2 className="text-xl text-gray-700 font-medium">{title}</h2>
           <Spacer size="md" />
@@ -24,7 +24,7 @@ function MainPage({ pageName, title, subTitle, children }: PageProps) {
       </div>
       <Spacer size="3xl" className="hidden md:block" />
       <Spacer size="2xl" className="md:hidden" />
-      <main className="container mx-auto">{children}</main>
+      <main className="wrapper mx-auto">{children}</main>
     </>
   );
 }

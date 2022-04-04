@@ -57,3 +57,66 @@
     @apply isolate;
   }
 }
+
+@layer utilities {
+  /* Can't access safe-area-inset-* props before ios 10, and there is no notch neither so don't worry*/
+  .wrapper {
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* No env() in ios 11, use constant() instead */
+  @supports (padding-left: constant(safe-area-inset-left)) {
+    .wrapper {
+      padding-left: constant(safe-area-inset-left);
+      padding-right: constant(safe-area-inset-right);
+    }
+  }
+
+  /* ios 11- */
+  @supports (padding: max(0px)) {
+    .wrapper {
+      padding-left: max(16px, env(safe-area-inset-left));
+      padding-right: max(16px, env(safe-area-inset-right));
+    }
+  }
+
+  @media (min-width: 640px) {
+    .wrapper {
+      max-width: 640px;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+  }
+
+  @supports (padding-left: constant(safe-area-inset-left)) {
+    @media (min-width: 640px) {
+      .wrapper {
+        padding-left: constant(safe-area-inset-left);
+        padding-right: constant(safe-area-inset-right);
+      }
+    }
+  }
+
+  @supports (padding: max(0px)) {
+    @media (min-width: 640px) {
+      .wrapper {
+        padding-left: max(32px, env(safe-area-inset-left));
+        padding-right: max(32px, env(safe-area-inset-right));
+      }
+    }
+  }
+
+  @media (min-width: 768px) {
+    .wrapper {
+      max-width: 768px;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .wrapper {
+      max-width: 1100px;
+    }
+  }
+}

@@ -13,7 +13,7 @@ function Navbar() {
 
   return (
     <header className="py-xl z-10">
-      <div className="container mx-auto flex justify-between items-center sm:items-baseline">
+      <div className="wrapper mx-auto flex justify-between items-center sm:items-baseline">
         <Link
           to="/"
           prefetch="intent"

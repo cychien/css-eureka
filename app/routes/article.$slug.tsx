@@ -42,7 +42,7 @@ function Article() {
   return (
     <>
       <Spacer size="0" className="!h-[24px] sm:!h-[40px]" />
-      <div className="container mx-auto">
+      <div className="wrapper mx-auto">
         <div className="relative">
           <h1 className="text-3xl font-bold">{post.title}</h1>
           <Spacer size="lg" />

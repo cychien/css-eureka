@@ -5,7 +5,7 @@ import Spacer from "../Spacer";
 function Footer() {
   return (
     <footer className="pt-xl pb-2xl md:pb-3xl bg-bg-200 border-t-[1px] border-t-bg-300">
-      <div className="container mx-auto">
+      <div className="wrapper mx-auto">
         <div className="flex justify-between flex-col md:flex-row">
           <div className="flex space-x-3xl">
             {PAGES.map((page) => (
