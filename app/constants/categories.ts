@@ -1,8 +1,8 @@
-const categoryKeys = ["mechanism", "flexbox"] as const;
+const categoryKeys = ["mechanism", "performance"] as const;
 
 const CATEGORIES: Record<typeof categoryKeys[number], string> = {
   mechanism: "渲染機制",
-  flexbox: "Flexbox",
+  performance: "效能優化",
 };
 
 export { categoryKeys };
