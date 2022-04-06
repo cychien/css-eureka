@@ -7,7 +7,11 @@ import Spacer from "../Spacer";
 import ShiftBy from "../ShiftBy";
 import PAGES from "~/constants/pages";
 
-function Navbar() {
+type Props = {
+  toggleBodyLocked: () => void;
+};
+
+function Navbar({ toggleBodyLocked }: Props) {
   const [isMobileMenuOpen, toggleMobileMenu] = useToggle(false);
   const { pathname } = useLocation();
 
@@ -74,7 +78,7 @@ function Navbar() {
         <motion.nav
           aria-label="Main navigation"
           className={cx(
-            "fixed inset-x-0 top-0 bg-secondary-300 p-md z-10 sm:hidden",
+            "fixed inset-0 bg-secondary-300 p-md z-10 sm:hidden",
             !isMobileMenuOpen && "hidden"
           )}
           initial="closed"
@@ -102,6 +106,10 @@ function Navbar() {
                 <Link
                   to={page.link}
                   prefetch="intent"
+                  onClick={() => {
+                    toggleMobileMenu();
+                    toggleBodyLocked();
+                  }}
                   className={
                     (
                       page.link === "/articles"
@@ -122,7 +130,10 @@ function Navbar() {
         <ShiftBy y={-10} className="z-10 sm:hidden">
           <MobileMenuButton
             isOpen={isMobileMenuOpen}
-            onClick={toggleMobileMenu}
+            onClick={() => {
+              toggleMobileMenu();
+              toggleBodyLocked();
+            }}
           />
         </ShiftBy>
       </div>

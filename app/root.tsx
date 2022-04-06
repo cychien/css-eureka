@@ -7,13 +7,20 @@ import {
   ScrollRestoration,
 } from "remix";
 import type { MetaFunction, LinksFunction } from "remix";
+import cx from "classnames";
 import styles from "./styles/app.css";
 import Navbar from "./components/Navbar";
 import Spacer from "./components/Spacer";
 import Footer from "./components/Footer";
+import useToggle from "~/utils/hooks/useToggle";
 
 export const meta: MetaFunction = () => {
-  return { title: "CSS Eureka", description: "帶你重新理解 CSS" };
+  return {
+    title: "CSS Eureka",
+    description: "帶你重新理解 CSS",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "default",
+  };
 };
 
 export const links: LinksFunction = () => {
@@ -33,6 +40,8 @@ export const links: LinksFunction = () => {
 };
 
 export default function App() {
+  const [isBodyLocked, toggleBodyLocked] = useToggle(false);
+
   return (
     <html lang="en">
       <head>
@@ -44,8 +53,8 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
-        <Navbar />
+      <body className={cx({ "overflow-hidden": isBodyLocked })}>
+        <Navbar toggleBodyLocked={toggleBodyLocked} />
         <Outlet />
         <Spacer size="0" className="!h-[120px] md:!h-[142px]" />
         <Footer />
