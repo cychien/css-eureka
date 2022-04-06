@@ -85,7 +85,7 @@ export default function Articles() {
             ))}
           </ul>
         </aside>
-        <div className="space-y-3xl flex-1 md:max-w-[500px] lg:max-w-[664px]">
+        <div className="space-y-2xl flex-1 md:max-w-[500px] lg:max-w-[664px]">
           {posts.map((post) => (
             <Article
               key={post.slug}
