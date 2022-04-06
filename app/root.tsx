@@ -17,7 +17,7 @@ import useToggle from "~/utils/hooks/useToggle";
 export const meta: MetaFunction = () => {
   return {
     title: "CSS Eureka",
-    description: "帶你重新理解 CSS",
+    description: "以簡單、全面的角度重新理解 CSS",
     "apple-mobile-web-app-capable": "yes",
     "apple-mobile-web-app-status-bar-style": "default",
   };
