@@ -10,7 +10,10 @@ import cx from "classnames";
 import Tag from "~/components/Tag";
 
 export const meta: MetaFunction = () => {
-  return { title: "文章", description: "帶你建立完整的 CSS mental model" };
+  return {
+    title: "帶你建立正確的 CSS 心智模型",
+    description: "著重於告訴你為什麼，解釋那些 CSS 的奇怪部分",
+  };
 };
 
 async function getLoaderData(category: string | null) {
@@ -42,8 +45,8 @@ export default function Articles() {
   return (
     <MainPage
       pageName="文章"
-      title="帶你建立完整的 CSS mental model"
-      subTitle="如果你曾深入研究過 CSS 規範，那你可能看過標題上這幾個名詞"
+      title="帶你建立正確的 CSS 心智模型"
+      subTitle="著重於告訴你為什麼，解釋那些 CSS 的奇怪部分"
     >
       <div className="flex flex-row-reverse justify-between items-baseline">
         <aside className="hidden flex-1 md:max-w-[120px] lg:max-w-[150px] md:block">
@@ -82,7 +85,7 @@ export default function Articles() {
             ))}
           </ul>
         </aside>
-        <div className="space-y-2xl flex-1 md:max-w-[500px] lg:max-w-[664px]">
+        <div className="space-y-3xl flex-1 md:max-w-[500px] lg:max-w-[664px]">
           {posts.map((post) => (
             <Article
               key={post.slug}
@@ -121,7 +124,7 @@ function Article({
       </h3>
       <Spacer size="0" className="!h-[20px]" />
       <p className="leading-relaxed text-gray-600">{excerpt}</p>
-      <Spacer size="sm" />
+      <Spacer size="md" />
       <div className="flex space-x-md items-center">
         <Tag>{CATEGORIES[category]}</Tag>
         <div className="flex items-center">

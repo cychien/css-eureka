@@ -21,7 +21,7 @@ function Navbar({ toggleBodyLocked }: Props) {
         <Link
           to="/"
           prefetch="intent"
-          className="text-3xl font-logo font-bold text-primary-500 leading-none rotate-0 transition-transform will-change-transform hover:-rotate-3"
+          className="text-3xl font-logo font-bold text-primary-500 leading-none"
         >
           CSS Eureka
         </Link>
